@@ -1,0 +1,149 @@
+/* Importation de la police Poppins (Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* Application de la police Poppins pour l'ensemble de la page */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #aac9e7; /* Fond de page clair */
+  color: #333; /* Texte sombre pour la lisibilité */
+}
+
+/* Style global pour centrer la table */
+.match-history {
+  display: flex;
+  flex-wrap: wrap; /* Permet aux éléments de se réorganiser en fonction de l'espace */
+  gap: 10px; /* Espacement entre chaque élément */
+  justify-content: flex-start; /* Aligner à gauche */
+  margin-top: 5px; /* Ajoute un petit espace au-dessus des matchs */
+}
+
+.match-history span {
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 8px; /* Bords plus arrondis pour un design plus moderne */
+  background-color: #b5d7ee; /* Fond gris très clair pour les éléments */
+  white-space: nowrap; /* Empêche les dates de se couper en plusieurs lignes */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Effet de transition pour les interactions */
+}
+
+/* Historique des matchs - Victoires et Défaites (pas de changement) */
+.match-history .win {
+  background-color: #276122; /* Vert moderne */
+  color: #fff; /* Texte blanc */
+}
+
+.match-history .loss {
+  background-color: #7e1717; /* Orange doux */
+  color: #fff; /* Texte blanc */
+}
+
+/* Tableau */
+table {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  text-align: center;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* Fond blanc pour la table */
+  border-radius: 8px; /* Coins arrondis pour la table */
+  overflow: hidden;
+}
+
+/* En-tête de la table */
+thead th {
+  background-color: #afcce6; /* Bleu-gris plus moderne */
+  color: white;
+  padding: 15px;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+/* Corps de la table */
+tbody td {
+  padding: 15px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #555; /* Texte légèrement plus clair pour un aspect moderne */
+}
+
+/* Ligne alternée pour le corps */
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #ccb7b7;
+}
+
+/* Style pour la liste d'historique des matchs */
+td ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Hover effect pour les lignes */
+tbody tr:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.02); /* Petit zoom pour l'effet hover */
+}
+
+/* Media query pour mobile */
+@media (max-width: 768px) {
+  table {
+    font-size: 12px;
+  }
+
+  thead th, tbody td {
+    padding: 10px;
+  }
+
+  .match-history span {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+
+/* Historique des matchs - Victoires et Défaites */
+ul li.win {
+  background-color: #48a541; /* Vert moderne */
+  color: #fff; /* Texte blanc */
+  border: 1px solid #56a349;
+  border-radius: 8px;
+  padding: 6px;
+  margin: 6px 0;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Ombre subtile pour donner de la profondeur */
+}
+
+ul li.loss {
+  background-color: #ce1e1e; /* Orange doux */
+  color: #fff; /* Texte blanc */
+  border: 1px solid #e08c1c;
+  border-radius: 8px;
+  padding: 6px;
+  margin: 6px 0;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Ombre subtile pour donner de la profondeur */
+}
+
+/* Style de l'icône de profil */
+.profile-icon {
+  width: 36px; /* Taille légèrement augmentée pour plus de visibilité */
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rank-icon {
+  width: 36px;  /* Ajuster la taille de l'icône du rang */
+  height: 36px;
+  object-fit: contain;
+}
+
+/* Effet hover pour les éléments d'historique */
+.match-history span:hover {
+  background-color: #c1c6c8; /* Changer la couleur au survol */
+  transform: scale(1.05); /* Effet de zoom */
+}
