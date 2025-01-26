@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "soloq-stats:build:production"
+              "buildTarget": "soloq-stats:build:production"
             },
             "development": {
-              "browserTarget": "soloq-stats:build:development"
+              "buildTarget": "soloq-stats:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "soloq-stats:build"
+            "buildTarget": "soloq-stats:build"
           }
         },
         "test": {
@@ -101,6 +101,5 @@
         }
       }
     }
-  },
-  "defaultProject": "soloq-stats"
+  }
 }
