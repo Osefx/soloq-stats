@@ -43,4 +43,8 @@ export class RiotApiService {
   getSummonerByPuuid(puuid: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/summoner/by-puuid/${puuid}`);
   }
+  // Nouvelle méthode pour vérifier si un summoner est en partie
+  getSummonerLiveMatch(puuid: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/summoner/livematches/${puuid}`);
+  }
 }

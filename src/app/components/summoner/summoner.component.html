@@ -1,75 +1,89 @@
-<table>
-  <thead>
-    <tr>
-      <th>Icône</th>
-      <th>Nom</th>
-      <th>Tagline</th>
-      <th>Division</th>
-      <th>Points</th>
-      <th>Victoires</th>
-      <th>Défaites</th>
-      <th>Winrate</th>
-      <th>Historique des matchs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let friend of pezzosData">
-      <td>
-        <img
-          [src]="'https://ddragon.leagueoflegends.com/cdn/15.2.1/img/profileicon/' + friend.profileIconId + '.png'"
-          alt="Profile Icon"
-          class="profile-icon"
-        />
-      </td>
-      <td>
-        <a *ngIf="friend.opggUrl" [href]="friend.opggUrl" target="_blank" rel="noopener noreferrer">
-          {{ friend.gameName }}
-        </a>
-        <span *ngIf="!friend.opggUrl">
-          {{ friend.gameName }}
-        </span>
-      </td>
-      <td>{{ friend.tagLine }}</td>
-      <td>
-        <div *ngIf="friend.rankData && friend.rankData.length > 0">
-          <img
-            *ngIf="friend.rankData[0]?.tier"
-            [src]="'assets/Rank=' + (friend.rankData[0]?.tier | titlecase) + '.png'"
-            alt="Rank Icon"
-            class="rank-icon"
-          />
-          <p></p>
-          <span>{{ friend.rankData[0]?.tier || 'N/A' }} {{ friend.rankData[0]?.rank || '' }}</span>
+<div class="friend-card" *ngFor="let friend of pezzosData">
+  <!-- Profil Section -->
+  <div class="friend-profile">
+    <img
+      [src]="'https://ddragon.leagueoflegends.com/cdn/15.2.1/img/profileicon/' + friend.profileIconId + '.png'"
+      alt="Profile Icon"
+      class="profile-icon"
+    />
+    <div class="friend-info">
+      <a *ngIf="friend.opggUrl" [href]="friend.opggUrl" target="_blank" rel="noopener noreferrer">
+        {{ friend.gameName }}
+      </a>
+      <span *ngIf="!friend.opggUrl">{{ friend.gameName }}</span>
+      <p>Level: {{ friend.summonerLevel || 'N/A' }}</p>
+    </div>
+  </div>
+
+  <!-- Classement Section -->
+  <div class="friend-rank">
+    <div *ngIf="friend.rankData && friend.rankData.length > 0">
+      <img
+        *ngIf="friend.rankData[0]?.tier"
+        [src]="'assets/Rank=' + (friend.rankData[0]?.tier | titlecase) + '.png'"
+        alt="Rank Icon"
+        class="rank-icon"
+      />
+      <p>{{ friend.rankData[0]?.tier || 'N/A' }} {{ friend.rankData[0]?.rank || '' }}</p>
+      <p>Wins: {{ friend.rankData[0]?.wins }}</p>
+      <p>Loses: {{ friend.rankData[0]?.loses }}</p>
+      <p>LP: {{ friend.rankData[0]?.leaguePoints || 'N/A' }}</p>
+      <p>Winrate: {{ getWinratePercentage(friend.rankData[0]?.wins, friend.rankData[0]?.losses) | number:'1.0-2' }}%</p>
+      <div class="winrate-bar-container">
+        <div
+          class="winrate-bar"
+          [ngClass]="{
+            'green': getWinrateColor(friend.rankData[0]?.wins, friend.rankData[0]?.losses) === 'green',
+            'orange': getWinrateColor(friend.rankData[0]?.wins, friend.rankData[0]?.losses) === 'orange',
+            'red': getWinrateColor(friend.rankData[0]?.wins, friend.rankData[0]?.losses) === 'red'
+          }"
+          [style.width]="getWinratePercentage(friend.rankData[0]?.wins, friend.rankData[0]?.losses) + '%'"
+        ></div>
+      </div>
+    </div>
+    <span *ngIf="!friend.rankData || friend.rankData.length === 0">N/A</span>
+  </div>
+
+  <div class="friend-history">
+    <h4>Historique des matchs</h4>
+    <div class="match-list">
+      <div
+        class="match"
+        *ngFor="let match of friend.matchHistory"
+        [ngClass]="{ 'win': match.playerWon, 'loss': !match.playerWon }"
+        (click)="toggleMatchDetails(match)"
+      >
+        <div class="match-summary">
+          <span class="queue-type">{{ match.queueType }} -</span>
+          <span class="game-date"> {{ match.info.gameCreation | date }}</span>
         </div>
-        <span *ngIf="!friend.rankData || friend.rankData.length === 0">N/A</span>
-      </td>
-      <td>{{ friend.rankData?.[0]?.leaguePoints || 'N/A' }}</td>
-      <td>{{ friend.rankData?.[0]?.wins || 'N/A' }}</td>
-      <td>{{ friend.rankData?.[0]?.losses || 'N/A' }}</td>
-      <td>
-        <div class="winrate-bar-container">
-            <div
-                class="winrate-bar"
-                [ngClass]="{
-                    'green': getWinrateColor(friend.rankData[0]?.wins, friend.rankData[0]?.losses) === 'green',
-                    'orange': getWinrateColor(friend.rankData[0]?.wins, friend.rankData[0]?.losses) === 'orange',
-                    'red': getWinrateColor(friend.rankData[0]?.wins, friend.rankData[0]?.losses) === 'red'
-                }"
-                [style.width]="getWinratePercentage(friend.rankData[0]?.wins, friend.rankData[0]?.losses) + '%'"
-            ></div>
+        <div class="match-details" *ngIf="match.showDetails">
+          <ul>
+            <li>Champion : {{ match.playerStats.championName }}</li>
+            <li>Kills : {{ match.playerStats.kills }}</li>
+            <li>Deaths : {{ match.playerStats.deaths }}</li>
+            <li>Assists : {{ match.playerStats.assists }}</li>
+            <li>Vision Score : {{ match.playerStats.visionScore }}</li>
+            <li>Temps mort : {{ match.playerStats.totalTimeSpentDead }} secondes</li>
+          </ul>
         </div>
-        <span>{{ getWinratePercentage(friend.rankData[0]?.wins, friend.rankData[0]?.losses) | number:'1.0-2' }}%</span>
-      </td>
-      <td>
-        <ul *ngIf="friend.matchHistory && friend.matchHistory.length > 0">
-          <li
-            *ngFor="let match of friend.matchHistory"
-            [ngClass]="{ 'win': match.playerWon, 'loss': !match.playerWon }"
-          >
-            {{ match.queueType }} - {{ match.info.gameCreation | date }}
-          </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Live Game Section -->
+<div class="friend-live-game">
+  <div *ngIf="friend.liveMatchData">
+    <span *ngIf="friend.liveMatchData.isInGame" class="en-jeu">
+      Actuellement en jeu
+      <p>Mode: {{ getGameMode(friend.liveMatchData.gameQueueConfigId) }}</p> <!-- Utilisation de la méthode ici -->
+      <p>Team: {{ friend.liveMatchData.teamId }}</p>
+    </span>
+    <span *ngIf="!friend.liveMatchData.isInGame" class="hors-ligne">Hors ligne</span>
+  </div>
+  <span *ngIf="!friend.liveMatchData" class="na">N/A</span>
+</div>
+
+</div>

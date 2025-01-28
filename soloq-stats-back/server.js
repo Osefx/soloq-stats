@@ -77,6 +77,27 @@ app.get('/summoner/matches/:puuid', async (req, res) => {
     res.status(error.response?.status || 500).send(error.response?.data || error.message);
   }
 });
+// Endpoint pour récupérer les parties en cours d'un summoner
+app.get('/summoner/livematches/:puuid', async (req, res) => {
+  const { puuid } = req.params;
+  try {
+    // Récupérer les informations sur la partie en cours
+    const liveMatchResponse = await axios.get(
+      `https://euw1.api.riotgames.com/lol/spectator/v5/active-games/by-summoner/${puuid}`,
+      { headers: { 'X-Riot-Token': RIOT_API_KEY } }
+    );
+      console.log('données live:', liveMatchResponse.data)
+    res.json(liveMatchResponse.data);  // Retourne les détails de la partie en cours
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      // Le summoner n'est pas en partie
+      res.json({ isInGame: false });
+    } else {
+      console.error('Erreur API Riot (Live Match) :', error.response?.data || error.message);
+      res.status(error.response?.status || 500).send(error.response?.data || error.message);
+    }
+  }
+});
 
 // Lancer le serveur
 app.listen(port, () => {
